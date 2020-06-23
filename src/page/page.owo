@@ -1,0 +1,202 @@
+<template lang="pug">
+.home
+  plug(_name="module6" _logo="http://www.people.com.cn/img/2016people/images/rmw_logo.png" _src="https://template.owo.ink/f2c8316f61256e3f.owo")
+  .show-phone.no-pc
+  .scale-box-pc
+    .so.so-0
+      .so.so-1.no-phone
+      .so.so-2.no-phone
+      .so.so-3.no-phone
+      //- 图片显示
+      img.show(width="490" height="865" src="@|show.jpg|")
+      .datepicker-box
+        img.no-pc.close(src="@|guanbi.png|" o-tap="showDate")
+        #datepicker
+      .no-pc.select-date(o-tap="showDate" o-animation="shrink") 选择日期
+</template>
+
+<script>
+  var imgData = {
+    "20200617": "@|show.jpg|",
+  }
+  module.exports = {
+    data: {
+      dateIsShow: false
+    },
+    created: function () {
+      const datapicker = $( "#datepicker" ).datepicker({
+        changeMonth: true,
+        changeYear: true,
+        monthNamesShort: [ "1月", "2月", "3月", "4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月"],
+        dayNamesMin: ["日","一","二","三","四","五","六"], 
+        dateFormat: 'yymmdd',
+        firstDay: 1,
+        maxDate: "+0d",
+        minDate: new Date(2019, 10, 15),
+        showMonthAfterYear: true,
+        inline: true,
+        onSelect:(dateStr, obj) => {
+          // console.log(dateStr)
+          if (imgData[dateStr]) {
+            owo.tool.fadeChangeImage(this.query('.show'), "@|show.jpg|")
+            // this.query('.show').src = "@|show.jpg|"
+            if (screenInfo && !screenInfo.isPc) {
+              this.query('.datepicker-box').style.display = 'none'
+            }
+          } else {
+            alert('当日没有内容，请选择其他日期!')
+            return false
+          }
+        }
+      });
+      // 判断日历日期
+      let dateValue = parseInt(datapicker.val())
+      // 找到最新有值的那一天
+      while (!imgData[dateValue]) {
+        dateValue--
+      }
+      datapicker.datepicker( "setDate", dateValue + "")
+    },
+    showDate: function () {
+      this.data.dateIsShow = !this.data.dateIsShow
+      if (this.data.dateIsShow) {
+        this.query('.datepicker-box').style.display = 'block'
+      } else {
+        this.query('.datepicker-box').style.display = 'none'
+      }
+    }
+  }
+</script>
+
+
+<style lang="less">
+.home {
+  background-size: cover;
+  background-image: url('@|bg.jpg|');
+}
+.so {
+  position: absolute;
+}
+.so-0 {
+  left: 460px;
+  top: 109px;
+  width: 1001px;
+  height: 902px;
+  z-index: 0;;
+}
+.so-1 {
+  left: 532px;
+  top: 68px;
+  width: 275px;
+  height: 99px;
+  z-index: -1;
+  background-image: url('@|129.png|');;
+}
+.so-2 {
+  left: 807px;
+  top: 613px;
+  width: 140px;
+  height: 37px;
+  z-index: -2;
+  background-image: url('@|16.png|');;
+}
+.so-3 {
+  left: 0px;
+  top: 0px;
+  width: 1001px;
+  height: 902px;
+  z-index: -3;
+  background-image: url('@|134.png|');;
+}
+#datepicker {
+  position: absolute;
+  left: 545px;
+  width: 405px;
+  top: 195px;
+  height: 370px;
+}
+.ui-datepicker-calendar {
+  width: 100%;
+  thead {
+    th {
+      width: 55px;
+      height: 55px;
+      color: #2a8dc9;
+      background-color: white;
+      font-size: 24px;
+    }
+  }
+  td {
+    width: 55px;
+    height: 55px;
+    font-size: 24px;
+    text-align: center;
+    background-color: #8ed4d0;
+  }
+  .ui-state-disabled {
+    color: #999;
+  }
+  .ui-state-default {
+    color: #333;
+  }
+  .ui-state-active {
+    font-weight: bold;
+    background-color: #8c7def;
+    color: white;
+  }
+  a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    line-height: 55px;
+    cursor: pointer;
+  }
+  a:hover {
+    text-decoration: none;
+    background-color: #bce5fe;
+  }
+  .ui-datepicker-other-month {
+    opacity: 0.8;
+  }
+}
+.show {
+  position: absolute;
+  left: 11px;
+  top: 0;
+  width: 490px;
+  height: 865px;
+  display: block;
+}
+.ui-datepicker-next, .ui-datepicker-prev {
+  display: none;
+}
+.ui-datepicker-title {
+  text-align: right;
+  margin-bottom: 5px;
+}
+select {
+  font-size: 20px;
+  background-color: #4aa4c3;
+  color: white;
+  height: 30px;
+  border: none;
+  padding: 0 5px;
+  margin-right: 2px;
+}
+.show-phone {
+  height: 38vw;
+  background-size: 100%;
+  background-image: url('@|phone-bg.jpg|');
+}
+.select-date {
+  position: absolute;
+  top: -9vw;
+  right: 2vw;
+  color: #666;
+  background-color: white;
+  padding: 0 5px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 2px;
+}
+</style>
